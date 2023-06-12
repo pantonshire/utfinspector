@@ -18,5 +18,5 @@ export function TextField(props: TextFieldProps) {
       placeholder={props.placeholder}
       onChange={handleChange}
     />
-  )
+  );
 }

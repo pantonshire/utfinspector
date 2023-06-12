@@ -19,5 +19,5 @@ export default function RootLayout({
     <html lang="en">
       <body className={robotoSlab.className}>{children}</body>
     </html>
-  )
+  );
 }

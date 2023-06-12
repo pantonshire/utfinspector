@@ -2,7 +2,7 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import { Inspector } from '@/components/inspector';
 
-const sourceUrl = 'https://example.com';
+const sourceUrl = 'https://git.pantonshire.com/tom/utfinspector';
 
 export default function Home() {
   return (
@@ -15,5 +15,5 @@ export default function Home() {
 
       <Inspector sourceUrl={sourceUrl} />
     </main>
-  )
+  );
 }
