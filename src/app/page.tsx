@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import styles from './page.module.css'
-import { Inspector } from './inspector';
+import { Inspector } from '@/components/inspector';
 
 const sourceUrl = 'https://example.com';
 
