@@ -1,49 +1,38 @@
-// using solution from https://github.com/satelllte/nextjs-wasm for now
+import { useState, createContext, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 
-import { useState, createContext, useEffect, useRef } from 'react'
-import type { ReactNode } from 'react'
+type UtfdumpContextTy = {
+  utfdump?: typeof import('utfdump_wasm'),
+};
 
-const initial: IWASMContext = {}
+type UtfdumpContextProviderProps = {
+  children: ReactNode,
+};
 
-const useMountEffectOnce = (fn: () => void) => {
-  const wasExecutedRef = useRef(false)
+export const UtfdumpContext = createContext<UtfdumpContextTy>({});
+
+export function UtfdumpContextProvider(props: UtfdumpContextProviderProps) {
+  const hasLoaded = useRef(false);
+  const [contextValue, setContextValue] = useState<UtfdumpContextTy>({});
+  
   useEffect(() => {
-    if (!wasExecutedRef.current) {
-      fn()
+    // Ensure the WASM module is only run once, as this effect callback is called twice when React
+    // is in strict mode.
+    // FIXME: is atomic compare-and-swap necessary? Does React run this in a multithreaded context?
+    if (!hasLoaded.current) {
+      hasLoaded.current = true;
+
+      (async() => {
+        const utfdumpWasmModule = await import('utfdump_wasm');
+        await utfdumpWasmModule.default();
+        setContextValue({ utfdump: utfdumpWasmModule });
+      })();
     }
-    wasExecutedRef.current = true
-  }, [fn])
-}
-
-export const WASMContext = createContext(initial)
-
-export const WASMContextProvider: React.FC<WASMContextProviderProps> = ({
-  children
-}) => {
-  const [state, setState] = useState<IWASMContext>(initial)
-
-  // This has to run only once: https://github.com/rustwasm/wasm-bindgen/issues/3153
-  // Though, in development React renders twice when Strict Mode is enabled: https://reactjs.org/docs/strict-mode.html
-  // That's why it must be limited to a single mount run
-  useMountEffectOnce(() => {
-    (async() => {
-      const wasm = await import("utfdump_wasm");
-      await wasm.default();
-      setState({ wasm });
-    })()
-  })
+  }, []);
 
   return (
-    <WASMContext.Provider value={state}>
-      {children}
-    </WASMContext.Provider>
-  )
-}
-
-interface IWASMContext {
-  wasm?: typeof import('utfdump_wasm')
-}
-
-interface WASMContextProviderProps {
-  children: ReactNode
+    <UtfdumpContext.Provider value={contextValue}>
+      {props.children}
+    </UtfdumpContext.Provider>
+  );
 }

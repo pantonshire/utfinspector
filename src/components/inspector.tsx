@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react';
 import styles from '@/app/page.module.css'
 import { TextField } from './textfield';
-import { WASMContext, WASMContextProvider } from '@/context/utfdump';
+import { UtfdumpContext, UtfdumpContextProvider } from '@/context/utfdump';
 
 type InspectorProps = {
   sourceUrl: string,
@@ -13,7 +13,7 @@ export function Inspector(props: InspectorProps) {
   const [currentString, setCurrentString] = useState('');
 
   return (
-    <WASMContextProvider>
+    <UtfdumpContextProvider>
       <section className={styles.inspector_section}>
         <section className={styles.input_section}>
           <TextField
@@ -31,14 +31,14 @@ export function Inspector(props: InspectorProps) {
 
         <Out currentString={currentString} />
       </section>
-    </WASMContextProvider>
+    </UtfdumpContextProvider>
   );
 }
 
 function Out(props: { currentString: string }) {
-  const ctx = useContext(WASMContext);
+  const ctx = useContext(UtfdumpContext);
 
-  if (!ctx.wasm) {
+  if (!ctx.utfdump) {
     return (
       <p>Loading WASM...</p>
     );
@@ -46,8 +46,7 @@ function Out(props: { currentString: string }) {
 
   return (
     <section className={styles.output_section}>
-      {/* <p id='out_test'>{spongebob_case(currentString)}</p> */}
-      <p id='out_test'>{ctx.wasm.spongebob_case(props.currentString)}</p>
+      <p id='out_test'>{ctx.utfdump.spongebob_case(props.currentString)}</p>
     </section>
   );
 }
