@@ -37,16 +37,51 @@ export function Inspector(props: InspectorProps) {
 
 function Out(props: { currentString: string }) {
   const ctx = useContext(UtfdumpContext);
+  
+  let rows = [];
 
-  if (!ctx.utfdump) {
-    return (
-      <p>Loading WASM...</p>
-    );
+  if (ctx.utfdump) {
+    for (const codepointStr of props.currentString) {
+      const codepoint = codepointStr.codePointAt(0);
+      
+      if (codepoint !== undefined) {
+        const charData = ctx.utfdump.codepoint_char_data(codepoint);
+
+        rows.push((
+          <tr>
+            <td>{codepointStr.replace(/\s+/, ' ')}</td>
+            <td>{charData?.name()}</td>
+            <td>U+{codepoint.toString(16).padStart(4, '0')}</td>
+          </tr>
+        ));
+
+        charData?.free();
+      }
+    }
   }
 
   return (
-    <section className={styles.output_section}>
-      <p id='out_test'>{ctx.utfdump.spongebob_case(props.currentString)}</p>
+    <section className={styles.table_container}>
+      <div className={styles.overflow_scroll}>
+        <table id={styles.output_table}>
+          <thead>
+            <tr>
+              <th>Char</th>
+              <th>Name</th>
+              <th>Codepoint</th>
+              <th>UTF-8</th>
+              <th>UTF-16</th>
+              <th>Category</th>
+              <th>Combining</th>
+              <th>Bidirectional</th>
+              <th>Numeric value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

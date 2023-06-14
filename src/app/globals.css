@@ -107,12 +107,25 @@ body {
   text-decoration: none;
 } */
 
-a {
-  color: var(--main_1);
-}
-
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 } */
+
+a {
+  color: var(--main_1);
+}
+
+table {
+  overflow: auto;
+  border-collapse: collapse;
+  /* border: 1px solid var(--light_1); */
+}
+
+th,
+td {
+  padding: 0.25rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}

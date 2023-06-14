@@ -34,7 +34,6 @@
   transition: border-color 0.1s linear;
   font-size: 1rem;
   font-family: inherit;
-  
 }
 
 .text_field:hover {
@@ -45,4 +44,16 @@
   margin-top: 1rem;
   padding: 0 3rem;
   color: var(--text_light);
+}
+
+.table_container {
+  overflow-x: scroll;
+}
+
+#output_table tbody td:nth-child(1) {
+  text-align: center;
+}
+
+#output_table thead th:nth-child(2) {
+  min-width: 10em;
 }
