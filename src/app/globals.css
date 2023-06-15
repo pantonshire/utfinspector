@@ -1,6 +1,6 @@
 :root {
   --main_1: #735cd6;
-  --main_2: #d13fbe;
+  --main_2: #db52c9;
   --light_1: #a598e0;
   --text_light: #727272;
 }
@@ -127,5 +127,4 @@ th,
 td {
   padding: 0.25rem 1rem;
   text-align: left;
-  vertical-align: top;
 }

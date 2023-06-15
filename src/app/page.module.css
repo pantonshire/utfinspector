@@ -44,16 +44,23 @@
   margin-top: 1rem;
   padding: 0 3rem;
   color: var(--text_light);
+  font-size: 0.8rem;
 }
 
 .table_container {
   overflow-x: scroll;
+  padding-bottom: 1rem;
 }
 
-#output_table tbody td:nth-child(1) {
+#output_table {
+  margin: 0 auto;
+}
+
+#output_table tbody th:nth-child(1) {
   text-align: center;
 }
 
-#output_table thead th:nth-child(2) {
-  min-width: 10em;
+#output_table td,
+#output_table th {
+  white-space: nowrap;
 }
