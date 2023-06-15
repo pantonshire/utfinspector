@@ -56,14 +56,11 @@
 #output_table {
   margin: 0 auto;
   font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .output_table_regular tbody th:nth-child(1) {
   text-align: center;
-}
-
-.output_table_regular {
-  white-space: nowrap;
 }
 
 .output_table_transposed th,
@@ -79,6 +76,7 @@
 .button {
   padding: 0.25rem 2rem;
   display: block;
+  color: var(--main_1);
 }
 
 @media screen and (min-width: 40rem) {
