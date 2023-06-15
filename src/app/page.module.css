@@ -68,8 +68,7 @@
 
 @media screen and (min-width: 40rem) {
   .main {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding: 2rem 3rem;
   }
 
   .title {
