@@ -1,5 +1,5 @@
 .main {
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
 }
 
 .title_section {
@@ -9,7 +9,8 @@
 }
 
 .title {
-  font-size: 3em;
+  font-size: 2em;
+  text-align: center;
   font-variant: small-caps;
   font-weight: 900;
   color: transparent;
@@ -42,7 +43,7 @@
 
 .info_box {
   margin-top: 1rem;
-  padding: 0 3rem;
+  padding: 0 1rem;
   color: var(--text_light);
   font-size: 0.8rem;
 }
@@ -63,4 +64,21 @@
 #output_table td,
 #output_table th {
   white-space: nowrap;
+}
+
+@media screen and (min-width: 40rem) {
+  .main {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .title {
+    font-size: 3em;
+    text-align: left;
+  }
+
+  .info_box {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
