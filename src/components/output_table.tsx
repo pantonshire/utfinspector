@@ -67,32 +67,42 @@ export function OutputTable(props: { currentString: string }) {
     }
   }
 
+  let table;
+  
+  if (rows.length > 0) {
+    table = (
+      <table id={styles.output_table}>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>UTF-8</th>
+            <th>UTF-16LE</th>
+            <th>Category</th>
+            <th>Combining</th>
+            <th>Bidirectional</th>
+            <th>Mirrored</th>
+            <th>Decomp</th>
+            <th>Upper</th>
+            <th>Lower</th>
+            <th>Title</th>
+            <th>Numeric</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    );
+  } else {
+    table = (<></>);
+  }
+
   return (
     <section className={styles.table_container}>
       <div className={styles.overflow_scroll}>
-        <table id={styles.output_table}>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Code</th>
-              <th>UTF-8</th>
-              <th>UTF-16LE</th>
-              <th>Category</th>
-              <th>Combining</th>
-              <th>Bidirectional</th>
-              <th>Mirrored</th>
-              <th>Decomp</th>
-              <th>Upper</th>
-              <th>Lower</th>
-              <th>Title</th>
-              <th>Numeric</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows}
-          </tbody>
-        </table>
+        {table}
       </div>
     </section>
   );
