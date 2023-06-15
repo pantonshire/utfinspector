@@ -48,7 +48,12 @@ export function OutputTable(props: { currentString: string }) {
               <td>{charData.category_full()}</td>
               <td>{combiningClassName || combiningClassNum}</td>
               <td>{charData.bidi_full()}</td>
-              <td>{charData.numeric_value() || 'Not numeric'}</td>
+              <td>{charData.mirrored() ? 'Yes' : 'No'}</td>
+              <td>{optCharCodes(charData.decomp_string())}</td>
+              <td>{optCharCodes(charData.uppercase_string())}</td>
+              <td>{optCharCodes(charData.lowercase_string())}</td>
+              <td>{optCharCodes(charData.titlecase_string())}</td>
+              <td>{charData.numeric_value()}</td>
             </tr>
           ));
   
@@ -76,7 +81,12 @@ export function OutputTable(props: { currentString: string }) {
               <th>Category</th>
               <th>Combining</th>
               <th>Bidirectional</th>
-              <th>Numeric value</th>
+              <th>Mirrored</th>
+              <th>Decomp</th>
+              <th>Upper</th>
+              <th>Lower</th>
+              <th>Title</th>
+              <th>Numeric</th>
             </tr>
           </thead>
           <tbody>
@@ -97,4 +107,21 @@ function codepointToString(codepoint: EncodedCodepoint): string {
   ].slice(0, codepoint.len);
 
   return bytes.map((b) => b.toString(16).padStart(2, '0')).join(' ');
+}
+
+function charCodes(s: string): string {
+  let codes = [];
+  for (const codepointStr of s) {
+    const codepoint = codepointStr.codePointAt(0);
+    codes.push('U+' + codepoint?.toString(16).padStart(4, '0'));
+  }
+
+  return codes.join(', ');
+}
+
+function optCharCodes(s: string | undefined): string | undefined {
+  if (s !== undefined) {
+    return charCodes(s);
+  }
+  return undefined;
 }
