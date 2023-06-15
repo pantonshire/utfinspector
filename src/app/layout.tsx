@@ -1,7 +1,5 @@
 import './globals.css'
-import { Inter, Roboto_Slab } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] });
+import { Roboto_Slab } from 'next/font/google'
 
 const robotoSlab = Roboto_Slab({ subsets: ['latin'] });
 
