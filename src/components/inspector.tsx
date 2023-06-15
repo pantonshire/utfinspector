@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '@/app/page.module.css'
 import { TextField } from './textfield';
 import { UtfdumpContextProvider } from '@/context/utfdump';
 import { OutputTable } from './output_table';
+
+const lsTransposeKey = 'transpose';
+const lsTrueStr = 't';
+const lsFalseStr = 'f';
 
 type InspectorProps = {
   sourceUrl: string,
@@ -12,6 +16,18 @@ type InspectorProps = {
 
 export function Inspector(props: InspectorProps) {
   const [currentString, setCurrentString] = useState('');
+  const [transpose, setTranspose] = useState<boolean>(true);
+
+  useEffect(() => {
+    const lsTranspose = localStorage.getItem(lsTransposeKey) !== lsFalseStr;
+    setTranspose(lsTranspose);
+  }, []);
+
+  function toggleTranspose() {
+    const newTranspose = !transpose;
+    setTranspose(newTranspose);
+    localStorage.setItem(lsTransposeKey, newTranspose ? lsTrueStr : lsFalseStr);
+  }
 
   return (
     <UtfdumpContextProvider>
@@ -30,7 +46,11 @@ export function Inspector(props: InspectorProps) {
           </div>
         </section>
 
-        <OutputTable currentString={currentString} />
+        <OutputTable
+          currentString={currentString}
+          transpose={transpose}
+          toggleTranspose={toggleTranspose}
+        />
       </section>
     </UtfdumpContextProvider>
   );

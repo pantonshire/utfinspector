@@ -1,4 +1,5 @@
 :root {
+  --base_max_width: 1000px;
   --main_1: #735cd6;
   --main_2: #db52c9;
   --light_1: #a598e0;

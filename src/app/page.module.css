@@ -3,7 +3,7 @@
 }
 
 .title_section {
-  max-width: 1000px;
+  max-width: var(--base_max_width);
   margin: 0 auto 2rem auto;
   padding: 0 3rem;
 }
@@ -20,7 +20,7 @@
 }
 
 .input_section {
-  max-width: 1000px;
+  max-width: var(--base_max_width);
   margin: 0 auto 2rem auto;
 }
 
@@ -55,15 +55,30 @@
 
 #output_table {
   margin: 0 auto;
+  font-size: 0.9rem;
 }
 
-#output_table tbody th:nth-child(1) {
+.output_table_regular tbody th:nth-child(1) {
   text-align: center;
 }
 
-#output_table td,
-#output_table th {
+.output_table_regular {
   white-space: nowrap;
+}
+
+.output_table_transposed th,
+.output_table_transposed td {
+  vertical-align: top;
+}
+
+.button_container {
+  max-width: var(--base_max_width);
+  margin: 1rem auto 1rem auto;
+}
+
+.button {
+  padding: 0.25rem 2rem;
+  display: block;
 }
 
 @media screen and (min-width: 40rem) {

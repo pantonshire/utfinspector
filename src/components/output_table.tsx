@@ -3,10 +3,16 @@ import styles from '@/app/page.module.css'
 import { UtfdumpContext } from '@/context/utfdump';
 import { EncodedCodepoint } from 'utfdump_wasm';
 
-export function OutputTable(props: { currentString: string }) {
+export function OutputTable(props: {
+  currentString: string,
+  transpose: boolean,
+  toggleTranspose: () => void
+}) {
   const ctx = useContext(UtfdumpContext);
-  
+
+  let nonEmpty = false;
   let rows = [];
+  let transposedData: React.JSX.Element[][] = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
 
   if (ctx.utfdump) {
     for (const codepointStr of props.currentString) {
@@ -38,24 +44,60 @@ export function OutputTable(props: { currentString: string }) {
             charDisplayStr = '\u25cc' + charDisplayStr;
           }
 
-          rows.push((
-            <tr>
-              <th>{charDisplayStr}</th>
-              <td>{charData.name()}</td>
-              <td>U+{codepoint.toString(16).padStart(4, '0')}</td>
-              <td>{encodedUtf8Str}</td>
-              <td>{encodedUtf16Str}</td>
-              <td>{charData.category_full()}</td>
-              <td>{combiningClassName || combiningClassNum}</td>
-              <td>{charData.bidi_full()}</td>
-              <td>{charData.mirrored() ? 'Yes' : 'No'}</td>
-              <td>{optCharCodes(charData.decomp_string())}</td>
-              <td>{optCharCodes(charData.uppercase_string())}</td>
-              <td>{optCharCodes(charData.lowercase_string())}</td>
-              <td>{optCharCodes(charData.titlecase_string())}</td>
-              <td>{charData.numeric_value()}</td>
-            </tr>
-          ));
+          const elemChar = <th>{charDisplayStr}</th>;
+          const elemName = <td>{charData.name()}</td>;
+          const elemCode = <td>U+{codepoint.toString(16).padStart(4, '0')}</td>;
+          const elemUtf8 = <td>{encodedUtf8Str}</td>;
+          const elemUtf16 = <td>{encodedUtf16Str}</td>;
+          const elemCategory = <td>{charData.category_full()}</td>;
+          const elemCombining = <td>{combiningClassName || combiningClassNum}</td>;
+          const elemBidi = <td>{charData.bidi_full()}</td>;
+          const elemMirrored = <td>{charData.mirrored() ? 'Yes' : 'No'}</td>;
+          const elemDecomp = <td>{optCharCodes(charData.decomp_string())}</td>;
+          const elemUpper = <td>{optCharCodes(charData.uppercase_string())}</td>;
+          const elemLower = <td>{optCharCodes(charData.lowercase_string())}</td>;
+          const elemTitle = <td>{optCharCodes(charData.titlecase_string())}</td>;
+          const elemNumeric = <td>{charData.numeric_value()}</td>;
+
+          if (props.transpose) {
+            transposedData[0].push(elemChar);
+            transposedData[1].push(elemName);
+            transposedData[2].push(elemCode);
+            transposedData[3].push(elemUtf8);
+            transposedData[4].push(elemUtf16);
+            transposedData[5].push(elemCategory);
+            transposedData[6].push(elemCombining);
+            transposedData[7].push(elemBidi);
+            transposedData[8].push(elemMirrored);
+            transposedData[9].push(elemDecomp);
+            transposedData[10].push(elemUpper);
+            transposedData[11].push(elemLower);
+            transposedData[12].push(elemTitle);
+            transposedData[13].push(elemNumeric);
+          }
+
+          else {
+            rows.push((
+              <tr>
+                {elemChar}
+                {elemName}
+                {elemCode}
+                {elemUtf8}
+                {elemUtf16}
+                {elemCategory}
+                {elemCombining}
+                {elemBidi}
+                {elemMirrored}
+                {elemDecomp}
+                {elemUpper}
+                {elemLower}
+                {elemTitle}
+                {elemNumeric}
+              </tr>
+            ));
+          }
+
+          nonEmpty = true;
   
           charData.free();
         }
@@ -69,40 +111,83 @@ export function OutputTable(props: { currentString: string }) {
 
   let table;
   
-  if (rows.length > 0) {
-    table = (
-      <table id={styles.output_table}>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Code</th>
-            <th>UTF-8</th>
-            <th>UTF-16LE</th>
-            <th>Category</th>
-            <th>Combining</th>
-            <th>Bidirectional</th>
-            <th>Mirrored</th>
-            <th>Decomp</th>
-            <th>Upper</th>
-            <th>Lower</th>
-            <th>Title</th>
-            <th>Numeric</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    );
+  if (nonEmpty) {
+    if (props.transpose) {
+      table = (
+        <table id={styles.output_table} className={styles.output_table_transposed}>
+          <thead>
+            <tr><th></th>{transposedData[0]}</tr>
+          </thead>
+          <tbody>
+            <tr><th>Name</th>{transposedData[1]}</tr>
+            <tr><th>Code</th>{transposedData[2]}</tr>
+            <tr><th>UTF-8</th>{transposedData[3]}</tr>
+            <tr><th>UTF-16LE</th>{transposedData[4]}</tr>
+            <tr><th>Category</th>{transposedData[5]}</tr>
+            <tr><th>Combining</th>{transposedData[6]}</tr>
+            <tr><th>Bidirectional</th>{transposedData[7]}</tr>
+            <tr><th>Mirrored</th>{transposedData[8]}</tr>
+            <tr><th>Decomp</th>{transposedData[9]}</tr>
+            <tr><th>Upper</th>{transposedData[10]}</tr>
+            <tr><th>Lower</th>{transposedData[11]}</tr>
+            <tr><th>Title</th>{transposedData[12]}</tr>
+            <tr><th>Numeric</th>{transposedData[13]}</tr>
+          </tbody>
+        </table>
+      );
+    }
+
+    else {
+      table = (
+        <table id={styles.output_table} className={styles.output_table_regular}>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Code</th>
+              <th>UTF-8</th>
+              <th>UTF-16LE</th>
+              <th>Category</th>
+              <th>Combining</th>
+              <th>Bidirectional</th>
+              <th>Mirrored</th>
+              <th>Decomp</th>
+              <th>Upper</th>
+              <th>Lower</th>
+              <th>Title</th>
+              <th>Numeric</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      );
+    }
   } else {
     table = (<></>);
   }
 
+  let transposeButton;
+  if (nonEmpty) {
+    transposeButton = (
+      <button className={styles.button} onClick={props.toggleTranspose}>
+        Flip table
+      </button>
+    );
+  } else {
+    transposeButton = (<></>);
+  }
+
   return (
-    <section className={styles.table_container}>
-      <div className={styles.overflow_scroll}>
-        {table}
+    <section className={styles.output_section}>
+      <div className={styles.button_container}>
+        {transposeButton}
+      </div>
+      <div className={styles.table_container}>
+        <div className={styles.overflow_scroll}>
+          {table}
+        </div>
       </div>
     </section>
   );
