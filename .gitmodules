@@ -1,0 +1,3 @@
+[submodule "utfdump"]
+	path = utfdump
+	url = https://github.com/pantonshire/utfdump.git

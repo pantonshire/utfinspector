@@ -11,7 +11,7 @@ const nextConfig = {
       loadedWasm = true;
       nextConfig.plugins.push(
         new WasmPackPlugin({
-          crateDirectory: path.resolve(__dirname, '..', 'utfdump', 'wasm'),
+          crateDirectory: path.resolve(__dirname, 'utfdump', 'wasm'),
           outDir: path.resolve(__dirname, 'wasm', 'utfdump'),
           forceMode: 'production',
           extraArgs: '--target web',
