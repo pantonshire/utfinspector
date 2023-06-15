@@ -1,8 +1,7 @@
-import Image from 'next/image'
 import styles from './page.module.css'
 import { Inspector } from '@/components/inspector';
 
-const sourceUrl = 'https://git.pantonshire.com/tom/utfinspector';
+const sourceUrl = 'https://github.com/pantonshire/utfinspector';
 
 export default function Home() {
   return (
