@@ -14,7 +14,6 @@ FROM node AS node_deps
 WORKDIR /app/
 COPY package.json package-lock.json ./
 RUN npm ci
-ENTRYPOINT /bin/sh
 
 FROM node AS next_builder
 WORKDIR /app/
