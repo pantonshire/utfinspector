@@ -1,10 +1,10 @@
-FROM docker.io/library/rust:1.70-alpine AS wasm_builder
+FROM docker.io/library/rust:1.82-alpine AS wasm_builder
 WORKDIR /app/
 COPY utfdump/Cargo.toml utfdump/Cargo.lock ./
 COPY utfdump/lib/ ./lib/
 COPY utfdump/wasm/ ./wasm/
 COPY utfdump/bin/ ./bin/
-RUN apk update && apk add --no-cache musl-dev wasm-pack
+RUN apk update && apk add --no-cache musl-dev wasm-pack pkgconf openssl-dev openssl binaryen
 WORKDIR /app/wasm/
 RUN wasm-pack build --release --target web
 
